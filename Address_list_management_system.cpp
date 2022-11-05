@@ -119,6 +119,130 @@ void showPerson(Addressbooks* abs)
 	system("cls");
 }
 
+
+//检测联系人是否存在，存在返回联系人在通讯录中的位置，不存在返回-1
+int isExist(Addressbooks* abs,string name)
+{
+	for (int i = 0; i < abs->m_Size; i++)
+	{
+		//找到用户输入的姓名
+		if (abs->personArray[i].m_Name == name)
+		{
+			return i;//结束函数
+		}
+	}
+	return -1;
+}
+
+void deletePerson(Addressbooks* abs)
+{
+	cout << "请输入要删除的联系人: " << endl;
+	string name;
+	cin >> name;
+
+	int ret = isExist(abs, name);
+
+	if (ret != -1)
+	{
+		for (int i = ret; i < abs->m_Size; i++)
+		{
+			//数据前移
+			abs->personArray[i] = abs->personArray[i + 1];
+		}
+		abs->m_Size--;
+		cout << "删除成功" << endl;
+	}
+	else
+	{
+		cout << "未查到要删除的联系人" << endl;
+	}
+
+	system("pause");
+	system("cls");
+}
+
+void findPerson(Addressbooks* abs)
+{
+	cout << "请输入要查找的联系人姓名: " << endl;
+	string name;
+	cin >> name;
+
+	int ret = isExist(abs, name);
+	
+	if (ret != -1)
+	{
+		cout << "姓名:  " << abs->personArray[ret].m_Name << "\t"
+			 << "性别:  " << (abs->personArray[ret].m_Sex == 1 ? "男" : "女") << "\t"
+			 << "年龄:  " << abs->personArray[ret].m_age << "\t"
+			 << "电话:  " << abs->personArray[ret].m_Phone << "\t"
+			 << "住址:  " << abs->personArray[ret].m_Addr << endl;
+	}
+	else
+	{
+		cout << "查无此人" << endl;
+	}
+	system("pause");
+	system("cls");
+}
+
+void modifyPerson(Addressbooks* abs)
+{
+	cout << "请输入要修改的联系人姓名" << endl;
+	string name;
+	cin >> name;
+
+	int ret = isExist(abs, name);
+
+	if (ret != -1)
+	{
+		//姓名
+		cout << "请输入修改后的姓名: " << endl;
+		cin >> name;
+		abs->personArray[ret].m_Name = name;
+
+		//性别
+		cout << "请输入修改后的性别: 1. 男 2. 女" << endl;
+		int sex;
+		cin >> sex;
+		abs->personArray[ret].m_Sex = sex;
+
+		//年龄
+		cout << "请输入修改后的年龄: " << endl;
+		int age;
+		cin >> age;
+		abs->personArray[ret].m_age = age;
+
+		//电话
+		cout << "请输入修改后的电话: " << endl;
+		string phone;
+		cin >> phone;
+		abs->personArray[ret].m_Addr = phone;
+
+		//住址
+		cout << "请输入修改后的住址: " << endl;
+		string address;
+		cin >> address;
+		abs->personArray[ret].m_Addr = address;
+
+		cout << "修改成功" << endl;
+	}
+	else
+	{
+		cout << "查无此人" << endl;
+	}
+	system("pause");
+	system("cls");
+}
+
+void cleanPerson(Addressbooks* abs)
+{
+	abs->m_Size = 0;//罗技清空
+	cout << "通讯录已清空" << endl;
+
+	system("pause");
+	system("cls");
+}
+
 int main(){
 
 	Addressbooks abs;
@@ -140,12 +264,16 @@ int main(){
 			showPerson(&abs);
 			break;
 		case 3://3. 删除联系人
-			break;
+			deletePerson(&abs);
+			break;//break之前代码不是一行必须用括号括起来
 		case 4://4. 查找联系人
+			findPerson(&abs);
 			break;
 		case 5://5. 修改联系人
+			modifyPerson(&abs);
 			break;
 		case 6://6. 清空联系人
+			cleanPerson(&abs);
 			break;
 		case 0://0. 退出通讯录
 			cout << "欢迎下次使用" << endl;
